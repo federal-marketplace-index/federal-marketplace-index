@@ -1,0 +1,6 @@
+layer,label,all_pct,small_pct,wosb_pct,edwosb_pct,all_b,small_b,wosb_b,edwosb_b
+L1,Below MPT (no Rule of Two),0.09,0.32,0.40,0.15,3.2,2.5,0.5,0.1
+L2,MPT-SAT standalone (statutory mandate),1.23,3.59,3.96,2.64,42.2,27.3,4.7,1.2
+L3,Above SAT standalone (regulation only),41.98,28.25,22.42,24.29,1446.4,214.7,26.5,10.7
+L4,Orders at or below SAT,3.42,6.99,7.53,6.17,117.8,53.1,8.9,2.7
+L5,Orders above SAT (carve-out channel),53.28,60.84,65.69,66.76,1836.1,462.3,77.7,29.5

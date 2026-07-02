@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Independent measures of the federal marketplace — Federal Marketplace Index</title>
+<meta name="description" content="Federal Marketplace Index: independent, reproducible measures of the federal small-business marketplace. Measured. Reconciled. Public.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14243D; --rule:#2E75B6; --paper:#FAFBFC; --text:#22272E;
+  --muted:#5B6470; --teal:#0F6E56; --coral:#D85A30; --line:#D7DEE8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--paper);
+  color:var(--text);font-size:17px;line-height:1.65}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+a{color:var(--rule)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--rule);outline-offset:2px}
+header.site{background:var(--ink);color:#fff;padding:0}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+.brandbar{display:flex;align-items:baseline;justify-content:space-between;
+  flex-wrap:wrap;gap:8px;padding:22px 0 14px}
+.brand{font-size:1.35rem;font-weight:600;letter-spacing:.01em;color:#fff;text-decoration:none}
+.brand .idx{color:#9FC3E8;font-weight:400}
+.asof{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:#9FC3E8}
+nav.site{display:flex;gap:22px;flex-wrap:wrap;padding-bottom:16px}
+nav.site a{color:#D7E4F5;text-decoration:none;font-size:.92rem}
+nav.site a:hover,nav.site a[aria-current]{color:#fff;border-bottom:2px solid var(--rule)}
+/* Signature: the reading strip */
+.strip{border-top:1px solid rgba(255,255,255,.18);background:#0E1B30}
+.strip .wrap{display:flex;flex-wrap:wrap;gap:0;padding:0 22px}
+.reading{padding:14px 26px 14px 0;margin-right:26px;border-right:1px solid rgba(255,255,255,.14)}
+.reading:last-child{border-right:none}
+.reading .val{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;color:#fff;font-weight:500}
+.reading .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#8FA6C4;margin-top:2px}
+main{padding:44px 0 20px}
+h1{font-size:1.9rem;font-weight:600;color:var(--ink);line-height:1.25;margin-bottom:14px;
+  max-width:760px}
+h2{font-size:1.25rem;font-weight:600;color:var(--ink);margin:38px 0 10px;
+  padding-bottom:6px;border-bottom:2px solid var(--rule)}
+p{margin:0 0 14px;max-width:760px}
+p.lede{font-size:1.12rem;color:var(--muted);max-width:760px}
+.figure{border:1px solid var(--line);background:#fff;padding:18px 18px 8px;margin:22px 0 8px}
+.figure h3{font-size:1.02rem;font-weight:600;color:var(--ink);margin-bottom:2px}
+.figure .sub{font-size:.85rem;color:var(--muted);margin-bottom:8px}
+.figure .src{font-family:'IBM Plex Mono',monospace;font-size:.74rem;color:var(--muted);
+  padding:8px 0 10px;border-top:1px solid var(--line);margin-top:6px}
+.figure .src a{color:var(--muted)}
+table.dl{border-collapse:collapse;width:100%;margin:14px 0;font-size:.95rem}
+table.dl th{background:var(--ink);color:#fff;text-align:left;padding:9px 12px;font-weight:600}
+table.dl td{border:1px solid var(--line);padding:9px 12px;background:#fff}
+table.dl td.mono{font-size:.85rem}
+.note{border-left:4px solid var(--rule);background:#EDF2F9;padding:12px 16px;margin:16px 0;
+  max-width:760px;font-size:.95rem}
+pre.log{font-family:'IBM Plex Mono',monospace;font-size:.85rem;background:#fff;
+  border:1px solid var(--line);padding:16px;white-space:pre-wrap;max-width:860px}
+footer.site{margin-top:52px;background:var(--ink);color:#B9C6D8;font-size:.85rem}
+footer.site .wrap{padding:26px 22px;display:grid;gap:6px}
+footer.site .steward{color:#fff;font-weight:600}
+@media(max-width:640px){
+  .reading{border-right:none;padding:8px 0;margin-right:0;width:100%}
+  .strip .wrap{flex-direction:column;padding-bottom:8px}
+}
+</style>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <div class="brandbar">
+      <a class="brand" href="index.html">Federal Marketplace Index<span class="idx"> &middot; Measured. Reconciled. Public.</span></a>
+      <span class="asof">data as of 2026-07-01 &middot; built 2026-07-02</span>
+    </div>
+    <nav class="site" aria-label="Site"><a href="index.html" aria-current="page">Index</a><a href="methodology.html">Methodology</a><a href="downloads.html">Downloads</a><a href="changelog.html">Changelog</a><a href="about.html">About</a></nav>
+  </div>
+  <div class="strip"><div class="wrap"><div class="reading"><div class="val">3.59%</div><div class="lbl">of small-business dollars under the mandatory floor</div></div><div class="reading"><div class="val">3.96%</div><div class="lbl">of women-owned dollars under the mandatory floor</div></div><div class="reading"><div class="val">70.7%</div><div class="lbl">SB dollars in the order channel, FY2026</div></div></div></div>
+</header>
+<main><div class="wrap">
+
+<h1>Independent, reproducible measures of the federal small-business marketplace.</h1>
+<p class="lede">The Federal Marketplace Index tracks where federal contract dollars actually flow, how much of the
+marketplace mandatory small-business protections actually reach, and which way both are trending —
+from roughly 30 million public contract records, reconciled against the government's own published totals.
+Every number can be rebuilt by anyone, from public data, with the code on this site.</p>
+
+<h2>Where the mandatory Rule of Two applies</h2>
+<p>Share of five-year contract dollars (FY2022–FY2026) in each protection layer. The teal band —
+standalone awards between the micro-purchase threshold and the simplified acquisition threshold —
+is the only layer where small-business set-asides are mandated by statute.</p>
+<div class="figure">
+<h3>Contract dollars by Rule of Two protection layer</h3>
+<div class="sub">Percent of each category&#x27;s FY2022–FY2026 dollars</div>
+<div id="fig-exposure" role="img" aria-label="Contract dollars by Rule of Two protection layer"></div>
+<div class="src">source: <a href="data/exposure_layers.csv">exposure_layers.csv</a> &middot; FY2022–FY2026 &middot; reconciled to SBA goaling figures &middot; <a href="methodology.html">methodology</a></div>
+<script>Plotly.newPlot("fig-exposure", [{"type": "bar", "orientation": "h", "name": "Below MPT \u2014 no Rule of Two", "y": ["All federal dollars", "Small business", "Women-owned (WOSB)", "EDWOSB"], "x": [0.09, 0.32, 0.4, 0.15], "marker": {"color": "#888780"}, "hovertemplate": "Below MPT \u2014 no Rule of Two: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "MPT\u2013SAT standalone \u2014 statutory mandate", "y": ["All federal dollars", "Small business", "Women-owned (WOSB)", "EDWOSB"], "x": [1.23, 3.59, 3.96, 2.64], "marker": {"color": "#0F6E56"}, "hovertemplate": "MPT\u2013SAT standalone \u2014 statutory mandate: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "Above SAT standalone \u2014 regulation only", "y": ["All federal dollars", "Small business", "Women-owned (WOSB)", "EDWOSB"], "x": [41.98, 28.25, 22.42, 24.29], "marker": {"color": "#EF9F27"}, "hovertemplate": "Above SAT standalone \u2014 regulation only: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "Orders \u2264 SAT", "y": ["All federal dollars", "Small business", "Women-owned (WOSB)", "EDWOSB"], "x": [3.42, 6.99, 7.53, 6.17], "marker": {"color": "#F0997B"}, "hovertemplate": "Orders \u2264 SAT: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "Orders > SAT \u2014 the carve-out channel", "y": ["All federal dollars", "Small business", "Women-owned (WOSB)", "EDWOSB"], "x": [53.28, 60.84, 65.69, 66.76], "marker": {"color": "#D85A30"}, "hovertemplate": "Orders > SAT \u2014 the carve-out channel: %{x:.2f}%<extra></extra>"}], {"barmode": "stack", "height": 300, "margin": {"l": 150, "r": 10, "t": 6, "b": 34}, "xaxis": {"range": [0, 100], "ticksuffix": "%", "gridcolor": "#E5EAF1"}, "yaxis": {"autorange": "reversed"}, "legend": {"orientation": "h", "y": -0.18, "font": {"size": 11}}, "font": {"family": "IBM Plex Sans, sans-serif", "size": 13, "color": "#22272E"}, "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)"}, {displayModeBar:false, responsive:true});</script>
+</div>
+
+<h2>The migration into the order channel</h2>
+<p>Share of each category's dollars flowing through task and delivery orders, by fiscal year.
+Small-business dependence on the order channel has risen every year of the window while the
+overall market's share has held roughly stable — the migration is concentrated on the protected categories.</p>
+<div class="figure">
+<h3>Order-channel share of dollars by fiscal year</h3>
+<div class="sub">FY2026 is a partial year</div>
+<div id="fig-migration" role="img" aria-label="Order-channel share of dollars by fiscal year"></div>
+<div class="src">source: <a href="data/order_channel_share_by_fy.csv">order_channel_share_by_fy.csv</a> &middot; FY2022–FY2026 &middot; reconciled to SBA goaling figures &middot; <a href="methodology.html">methodology</a></div>
+<script>Plotly.newPlot("fig-migration", [{"type": "scatter", "mode": "lines+markers", "name": "All federal dollars", "x": ["2022", "2023", "2024", "2025", "2026"], "y": [53.5, 56.2, 59.4, 57.7, 56.2], "line": {"color": "#5B6470", "width": 2.5}, "hovertemplate": "All federal dollars FY%{x}: %{y:.1f}%<extra></extra>"}, {"type": "scatter", "mode": "lines+markers", "name": "Small business", "x": ["2022", "2023", "2024", "2025", "2026"], "y": [66.0, 66.9, 68.2, 68.7, 70.7], "line": {"color": "#0F6E56", "width": 2.5}, "hovertemplate": "Small business FY%{x}: %{y:.1f}%<extra></extra>"}, {"type": "scatter", "mode": "lines+markers", "name": "Women-owned (WOSB)", "x": ["2022", "2023", "2024", "2025", "2026"], "y": [71.6, 70.9, 74.6, 74.4, 76.0], "line": {"color": "#2E75B6", "width": 2.5}, "hovertemplate": "Women-owned (WOSB) FY%{x}: %{y:.1f}%<extra></extra>"}, {"type": "scatter", "mode": "lines+markers", "name": "EDWOSB", "x": ["2022", "2023", "2024", "2025", "2026"], "y": [68.2, 67.0, 77.0, 77.5, 83.5], "line": {"color": "#D85A30", "width": 2.5}, "hovertemplate": "EDWOSB FY%{x}: %{y:.1f}%<extra></extra>"}], {"height": 340, "margin": {"l": 50, "r": 10, "t": 6, "b": 60}, "yaxis": {"ticksuffix": "%", "gridcolor": "#E5EAF1", "title": {"text": "order-channel share of dollars", "font": {"size": 12}}}, "xaxis": {"type": "category"}, "legend": {"orientation": "h", "y": -0.22, "font": {"size": 11}}, "font": {"family": "IBM Plex Sans, sans-serif", "size": 13, "color": "#22272E"}, "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)", "annotations": [{"x": "2026", "y": 1.02, "yref": "paper", "showarrow": false, "text": "FY2026 partial", "font": {"size": 10, "color": "#5B6470"}}]}, {displayModeBar:false, responsive:true});</script>
+</div>
+
+<div class="note"><strong>Version 0.</strong> This is the Index's first public release, published to
+accompany formal comments filed in the FAR Overhaul rulemakings (FAR Cases 2026-001, -002, -005, -007).
+Additional measures — new entrants, vendor concentration, and district-level views — join on the
+quarterly schedule. See the <a href="changelog.html">changelog</a> for exactly what changed and when.</div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  <div class="steward">Powered by The American Small Business Chamber of Commerce</div>
+  <div>An independent, privately produced resource. Not a U.S. government website.</div>
+  <div>Data and text: CC BY 4.0 &middot; Code: MIT &middot; Reuse freely with attribution to the Federal Marketplace Index.</div>
+  <div>Every figure on this site is reproducible from public federal data. Methods: <a href="methodology.html" style="color:#D7E4F5">methodology</a>. History of every change: <a href="changelog.html" style="color:#D7E4F5">changelog</a>.</div>
+</div></footer>
+</body></html>
