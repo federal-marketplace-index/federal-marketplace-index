@@ -219,7 +219,7 @@ def chart_exposure():
         "margin": {"l": 150, "r": 10, "t": 6, "b": 34},
         "xaxis": {"range": [0, 100], "ticksuffix": "%", "gridcolor": "#E5EAF1"},
         "yaxis": {"autorange": "reversed"},
-        "legend": {"orientation": "h", "y": -0.18, "font": {"size": 11}},
+        "legend": {"orientation": "h", "y": -0.18, "font": {"size": 11}, "traceorder": "normal"},
         "font": {"family": "IBM Plex Sans, sans-serif", "size": 13, "color": "#22272E"},
         "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)",
     }}
@@ -231,7 +231,7 @@ def chart_migration():
     for c in cats:
         rows = sorted([r for r in migration if r["category"] == c and r.get("order_share_pct")],
                       key=lambda r: int(r["fiscal_year"]))
-        xs = [r["fiscal_year"] for r in rows]
+        xs = [int(r["fiscal_year"]) for r in rows]
         ys = [float(r["order_share_pct"]) for r in rows]
         traces.append({
             "type": "scatter", "mode": "lines+markers", "name": CAT_LABELS[c],
@@ -241,11 +241,11 @@ def chart_migration():
     fig = {"data": traces, "layout": {
         "height": 340, "margin": {"l": 50, "r": 10, "t": 6, "b": 60},
         "yaxis": {"ticksuffix": "%", "gridcolor": "#E5EAF1", "title": {"text": "order-channel share of dollars", "font": {"size": 12}}},
-        "xaxis": {"type": "category"},
+        "xaxis": {"tickmode": "linear", "dtick": 1, "range": [2021.6, 2026.4]},
         "legend": {"orientation": "h", "y": -0.22, "font": {"size": 11}},
         "font": {"family": "IBM Plex Sans, sans-serif", "size": 13, "color": "#22272E"},
         "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)",
-        "annotations": [{"x": "2026", "y": 1.02, "yref": "paper", "showarrow": False,
+        "annotations": [{"x": 0.98, "xref": "paper", "y": 1.04, "yref": "paper", "showarrow": False,
                          "text": "FY2026 partial", "font": {"size": 10, "color": "#5B6470"}}],
     }}
     return fig
