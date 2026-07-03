@@ -26,9 +26,21 @@ SHORT_NAME = "Federal Marketplace Index"
 DOMAIN = "federalmarketplaceindex.org"
 TAGLINE = "Measured. Reconciled. Public."
 STEWARD = "Powered by The American Small Business Chamber of Commerce"
+STEWARD_FOOT = ('Powered by <a href="https://www.asbcc.org/" '
+                'style="color:#fff;text-decoration:underline">'
+                'The American Small Business Chamber of Commerce<sup>\u2122</sup></a>')
+STEWARD_BODY = ('Powered by <a href="https://www.asbcc.org/">'
+                'The American Small Business Chamber of Commerce<sup>\u2122</sup></a>')
 NOT_GOV = "An independent, privately produced resource. Not a U.S. government website."
 LICENSE_LINE = ("Data and text: CC BY 4.0 &middot; Code: MIT &middot; "
-                "Reuse freely with attribution to the Federal Marketplace Index.")
+                "Reuse freely with attribution to the Federal Marketplace Index<sup>\u2122</sup>.")
+
+FAVICON_SVG = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">'
+    '<rect width="64" height="64" rx="12" fill="#14243D"/>'
+    '<rect x="12" y="36" width="10" height="16" rx="2" fill="#0F6E56"/>'
+    '<rect x="27" y="24" width="10" height="28" rx="2" fill="#EF9F27"/>'
+    '<rect x="42" y="12" width="10" height="40" rx="2" fill="#D85A30"/>'
+    '</svg>')
 
 ROOT = Path(__file__).parent
 DATA = ROOT / "data"
@@ -166,6 +178,14 @@ def layout(title, active, content, extra_head=""):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)} — {SHORT_NAME}</title>
 <meta name="description" content="{SHORT_NAME}: independent, reproducible measures of the federal small-business marketplace. {TAGLINE}">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{SHORT_NAME}">
+<meta property="og:title" content="{html.escape(title)} \u2014 {SHORT_NAME}">
+<meta property="og:description" content="Independent, reproducible measures of the federal small-business marketplace. {TAGLINE}">
+<meta property="og:url" content="https://{DOMAIN}/">
+<meta property="og:image" content="https://{DOMAIN}/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>{CSS}</style>
@@ -186,7 +206,7 @@ def layout(title, active, content, extra_head=""):
 {content}
 </div></main>
 <footer class="site"><div class="wrap">
-  <div class="steward">{STEWARD}</div>
+  <div class="steward">{STEWARD_FOOT}</div>
   <div>{NOT_GOV}</div>
   <div>{LICENSE_LINE}</div>
   <div>Every figure on this site is reproducible from public federal data. Methods: <a href="methodology.html" style="color:#D7E4F5">methodology</a>. History of every change: <a href="changelog.html" style="color:#D7E4F5">changelog</a>.</div>
@@ -265,7 +285,7 @@ def figure(div_id, fig, title, sub, src_csv):
 def page_index():
     content = f"""
 <h1>Independent, reproducible measures of the federal small-business marketplace.</h1>
-<p class="lede">The {SHORT_NAME} tracks where federal contract dollars actually flow, how much of the
+<p class="lede">The {SHORT_NAME}<sup>\u2122</sup> tracks where federal contract dollars actually flow, how much of the
 marketplace mandatory small-business protections actually reach, and which way both are trending —
 from roughly 30 million public contract records, reconciled against the government's own published totals.
 Every number can be rebuilt by anyone, from public data, with the code on this site.</p>
@@ -372,7 +392,7 @@ This page is the Index's freshness guarantee.</p>
 def page_about():
     content = f"""
 <h1>About the Index</h1>
-<p class="lede">{TAGLINE} The {SHORT_NAME} exists because the public record of the federal
+<p class="lede">{TAGLINE} The {SHORT_NAME}<sup>\u2122</sup> exists because the public record of the federal
 marketplace is getting harder to see — and a constructed marketplace is kept honest by measurement.</p>
 
 <h2>What this is</h2>
@@ -382,7 +402,7 @@ who is entering and who is leaving, and how concentrated the supplier base is be
 quarterly, with every figure reproducible from public data.</p>
 
 <h2>Who produces it</h2>
-<p>{STEWARD}. [Governance and contributor statement to be finalized: stewardship, the data layers
+<p>{STEWARD_BODY}. [Governance and contributor statement to be finalized: stewardship, the data layers
 contributed by partner organizations, and every interest disclosed plainly. Independence is maintained
 through reproducibility — the methods are public, so the findings do not depend on trusting the producer.]</p>
 
@@ -408,6 +428,11 @@ def main():
     (DOCS / "changelog.html").write_text(page_changelog(), encoding="utf-8")
     (DOCS / "about.html").write_text(page_about(), encoding="utf-8")
     (DOCS / "CNAME").write_text(DOMAIN + "\n", encoding="utf-8")
+    (DOCS / "favicon.svg").write_text(FAVICON_SVG, encoding="utf-8")
+    assets = ROOT / "assets"
+    if assets.exists():
+        for f in assets.glob("*"):
+            (DOCS / f.name).write_bytes(f.read_bytes())
     (DOCS / ".nojekyll").write_text("", encoding="utf-8")
     for f in DATA.glob("*.csv"):
         (DOCS / "data" / f.name).write_bytes(f.read_bytes())
