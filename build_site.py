@@ -29,8 +29,6 @@ STEWARD = "Powered by The American Small Business Chamber of Commerce"
 STEWARD_FOOT = ('Powered by <a href="https://www.asbcc.org/" '
                 'style="color:#fff;text-decoration:underline">'
                 'The American Small Business Chamber of Commerce<sup>\u2122</sup></a>')
-STEWARD_BODY = ('Powered by <a href="https://www.asbcc.org/">'
-                'The American Small Business Chamber of Commerce<sup>\u2122</sup></a>')
 NOT_GOV = "An independent, privately produced resource. Not a U.S. government website."
 LICENSE_LINE = ("Data and text: CC BY 4.0 &middot; Code: MIT &middot; "
                 "Reuse freely with attribution to the Federal Marketplace Index<sup>\u2122</sup>.")
@@ -314,43 +312,78 @@ quarterly schedule. See the <a href="changelog.html">changelog</a> for exactly w
 def page_methodology():
     content = f"""
 <h1>Methodology</h1>
-<p class="lede">Every figure the Index publishes is built from public federal data through documented,
-reproducible steps. This page states the sources, the definitions, and the checks — including the ones
-that could have gone against us.</p>
+<p class="lede">Every figure the Index publishes is built from public federal data through documented, reproducible steps. This page states the sources, the definitions, and the checks &mdash; including the ones that could have gone against us. The full methodology paper travels with the data and code in the archived release.</p>
+
+<div class="note">This edition (v0.2) is permanently archived, with a citable DOI, at <a href="https://doi.org/10.5281/zenodo.21247216">https://doi.org/10.5281/zenodo.21247216</a>. Formal citations should reference that archived release, not the working source, which lives in the <a href="https://github.com/federal-marketplace-index/federal-marketplace-index">public GitHub repository</a>.</div>
 
 <h2>Sources</h2>
-<p>[To be completed from the methodology paper: USAspending/FPDS award records (FY2022–FY2026,
-~30.1M contract actions, 25.0M distinct awards); SAM.gov Public Monthly Entity Extract
-(758,617 registrants, July 2026 baseline); SBA certification records; U.S. Census Bureau
-Annual Business Survey (2021, NAICS 2017). Retrieval dates and file inventories listed per source.]</p>
+<p>All sources are public. No proprietary, licensed, or paywalled data enters any published measure.</p>
+<table class="dl">
+<tr><th>Source</th><th>Contents and role</th><th>Vintage / retrieval</th></tr>
+<tr><td>USAspending.gov contract archives (FPDS-sourced)</td><td>Prime contract transaction records &mdash; the base table of ~30.1 million contract actions across 25.0 million distinct awards, FY2022&ndash;FY2026. Foundation of the exposure and migration measures.</td><td>Full-year FY2022&ndash;FY2025; FY2026 partial through the June 2026 archive. Retrieved June 27&ndash;28, 2026.</td></tr>
+<tr><td>SAM.gov Public Monthly Entity Extract</td><td>All active federal registrants (758,617 entities, July 2026 baseline) with socioeconomic self-representations &mdash; the registered-availability universe.</td><td>July 1, 2026 extract, via the SAM Entity Extracts API.</td></tr>
+<tr><td>U.S. Census Bureau, Annual Business Survey (ABS)</td><td>Employer-firm counts by industry and owner demographics &mdash; the economy-wide availability universe used by the forthcoming disparity measures.</td><td>2021 survey; reference years 2022&ndash;2023 (NAICS 2022 vintage), via the Census API, June 30, 2026.</td></tr>
+<tr><td>SBA published reports (Goaling Report; Procurement Scorecard)</td><td>The government's official small-business achievement figures and eligible-dollar bases &mdash; calibration references for the Index's denominators and category totals.</td><td>Most recent published editions at time of release.</td></tr>
+<tr><td>87 FR 15468, as updated by the November 17, 2022 NAICS-2022 notice</td><td>The Federal Register instruments identifying the WOSB program's designated industries (NAICS), from which the Index's reference list is regenerated. The 2022 notice recodes the list to the NAICS-2022 vintage.</td><td>Published March 18, 2022; NAICS-2022 update November 17, 2022.</td></tr>
+</table>
 
 <h2>Definitions</h2>
-<p>[To be completed: protection-layer banding (award-level, era-appropriate thresholds —
-$10K/$250K FY2022–FY2025, $15K/$350K FY2026); order-channel classification (delivery orders,
-task orders, BPA calls); category flags (small business, WOSB, EDWOSB) as derived in the
-goaling-consistent pipeline; treatment of de-obligations and partial fiscal years.]</p>
+<p>Published table: <span class="mono">exposure_layers.csv</span>. Every contract dollar, FY2022&ndash;FY2026, is classified into one of five mutually exclusive layers defined by the legal footing of the small-business Rule of Two.</p>
+<table class="dl">
+<tr><th>Layer</th><th>Definition</th><th>Legal footing</th></tr>
+<tr><td>L1</td><td>Standalone awards at or below the micro-purchase threshold</td><td>No Rule of Two applies</td></tr>
+<tr><td>L2</td><td>Standalone awards above the micro-purchase threshold and at or below the simplified acquisition threshold</td><td>Statutory mandate &mdash; 15 U.S.C. &sect; 644(j)(1)</td></tr>
+<tr><td>L3</td><td>Standalone awards above the simplified acquisition threshold</td><td>Regulation only &mdash; FAR 19.502-2(b)</td></tr>
+<tr><td>L4</td><td>Task, delivery, and BPA-call orders at or below the simplified acquisition threshold</td><td>Order-level</td></tr>
+<tr><td>L5</td><td>Task, delivery, and BPA-call orders above the simplified acquisition threshold</td><td>Order-level &mdash; the carve-out channel</td></tr>
+</table>
+<p>Banding is performed at the award level: obligations are aggregated per distinct award, and the award's total value determines its band, so a large award cannot be misclassified by its incremental funding actions. Thresholds are era-appropriate &mdash; $10,000 / $250,000 for FY2022&ndash;FY2025 and $15,000 / $350,000 for FY2026 (effective October 1, 2025, 90 FR 41872). An action belongs to the order channel (L4/L5) when its award type is a delivery order, task order, or BPA call; purchase orders and definitive contracts are standalone.</p>
+<p>Each socioeconomic flag is a boolean derived from named FPDS representation columns, per the standardized definitions in the DoD Procurement Toolbox and GSA eLibrary &mdash; auditable rules, not summary fields taken on faith. Flags are non-exclusive by design: a dollar may count toward several categories at once, exactly as SBA reports categories, and overlaps are reported separately rather than silently double-counted.</p>
+<table class="dl">
+<tr><th>Pipeline flag</th><th>FPDS source column</th><th>Definition</th></tr>
+<tr><td class="mono">is_small</td><td class="mono">contracting_officers_determination_of_business_size</td><td>Meets the NAICS size standard for its industry</td></tr>
+<tr><td class="mono">is_wosb</td><td class="mono">women_owned_small_business</td><td>Majority owned and controlled by women</td></tr>
+<tr><td class="mono">is_edwosb</td><td class="mono">economically_disadvantaged_women_owned_small_business</td><td>Economically disadvantaged subset of WOSB</td></tr>
+<tr><td class="mono">is_woman_owned</td><td class="mono">woman_owned_business</td><td>Woman-owned, not necessarily small</td></tr>
+<tr><td class="mono">is_sdb</td><td class="mono">self_certified_small_disadvantaged_business</td><td>Self-certified small disadvantaged business</td></tr>
+<tr><td class="mono">is_8a</td><td class="mono">c8a_program_participant</td><td>SBA 8(a) program participant</td></tr>
+<tr><td class="mono">is_vosb</td><td class="mono">veteran_owned_business</td><td>Veteran-owned</td></tr>
+<tr><td class="mono">is_sdvosb</td><td class="mono">service_disabled_veteran_owned_business</td><td>Service-disabled veteran-owned</td></tr>
+<tr><td class="mono">is_hubzone</td><td class="mono">historically_underutilized_business_zone_hubzone_firm</td><td>HUBZone-located firm meeting residency rules</td></tr>
+</table>
+<p>The full flag set (including completeness-only flags such as the WOSB joint-venture representation) appears in Appendix A of the archived methodology paper.</p>
 
 <h2>Reconciliation</h2>
-<p>Before publication, category totals are reconciled to the Small Business Administration's published
-goaling figures, and every derived series is cross-checked against the base analysis it must agree with.
-The order-channel series, for example, must reproduce the pooled five-year order shares of the
-protection-layer analysis exactly — and does. [Reconciliation tables to be included.]</p>
+<p>Wherever an official published total exists, the pipeline is validated against it before any derived figure is published. Government-wide, the pipeline's FY2024 obligation total computes to $755.49 billion against GAO's published figure of approximately $755 billion &mdash; agreement to a fraction of one percent, establishing that the pull captures the complete government-wide universe.</p>
+<p>SBA's published achievement figures sit atop a documented stack of adjustments, which the Index reproduces transparently and labels exactly where reproduction stops: the total prime universe (the transparent headline denominator &mdash; every published share states its denominator); the goaling-eligible base after SBA's statutory and policy exclusions; the FPDS-base category figures (the reconciliation target); and the SBA-enhanced scorecard layer, which applies a de-obligation screen and a statutory double-credit multiplier. The Index's headline figures report actual, un-multiplied dollars; a parallel SBA-replica computation exists solely to prove fidelity against the published figures.</p>
+<p>Every category carries two named measures &mdash; a strict Index definition and an SBA-match definition &mdash; validated against SBA published goaling figures (awarding-agency lens, excluding de-obligations) for every year FY2022&ndash;FY2025:</p>
+<table class="dl">
+<tr><th>Category (SBA-match vs published)</th><th>FY2022</th><th>FY2023</th><th>FY2024</th><th>FY2025</th></tr>
+<tr><td>Small business</td><td class="mono">-1.50%</td><td class="mono">-0.53%</td><td class="mono">-0.41%</td><td class="mono">-0.57%</td></tr>
+<tr><td>WOSB</td><td class="mono">-1.80%</td><td class="mono">-1.82%</td><td class="mono">-1.87%</td><td class="mono">-2.37%</td></tr>
+<tr><td>8(a) [order-inheritance lens]</td><td class="mono">-2.71%</td><td class="mono">-0.49%</td><td class="mono">+0.67%</td><td class="mono">+1.46%</td></tr>
+<tr><td>VOSB</td><td class="mono">+0.32%</td><td class="mono">+1.93%</td><td class="mono">+0.37%</td><td class="mono">+0.81%</td></tr>
+<tr><td>SDVOSB</td><td class="mono">-1.63%</td><td class="mono">-0.97%</td><td class="mono">-1.66%</td><td class="mono">-1.47%</td></tr>
+<tr><td>SDB [union lens, documented]</td><td class="mono">+1.58%</td><td class="mono">+4.94%</td><td class="mono">+3.81%</td><td class="mono">+4.59%</td></tr>
+<tr><td>HUBZone [source-data limit, documented]</td><td class="mono">-13.91%</td><td class="mono">-13.05%</td><td class="mono">-13.66%</td><td class="mono">-15.48%</td></tr>
+</table>
+<p class="note">&Delta; = (Index SBA-match &minus; SBA published) &divide; SBA published; SBA figures from the awarding-agency, excluding-de-obligations lens.</p>
+<p>Four of the seven categories &mdash; small business, WOSB, VOSB, and SDVOSB &mdash; reconcile within &plusmn;2.4 percent every year, and 8(a) within &plusmn;2.8 percent, so five of the seven sit within &plusmn;2.8 percent every year. Two categories are documented exceptions rather than close reconciliations. HUBZone reconciles 13&ndash;15 percent below the SBA figure for a confirmed source-data reason &mdash; the public USAspending schema carries no HUBZone joint-venture column &mdash; a documented limitation of the public data, not a modeling error. SDB reconciles a few points above the SBA figure under a documented union-lens definition. Stated plainly: for the five reconciling categories the Index reproduces SBA's published figures to within roughly 3 percent every year, and it labels the two exceptions rather than smoothing them; it does not claim to reproduce SBA's exact internal eligible base, which depends on intermediate calculations SBA does not publish. The residual base gap (about $35 billion, roughly 5 percent) is catalogued as the boundary of public-data reproducibility rather than chased.</p>
+<p>Every derived series must also reconcile against the base analysis it extends. The order-channel migration series, for example, reproduces the base table's five-year category totals to within 0.006 percent and matches the protection-layer analysis's pooled order-channel shares exactly (56.70 / 67.83 / 73.22 / 72.93 percent for all / small / WOSB / EDWOSB). A series that fails reconciliation is not published until the discrepancy is resolved.</p>
 
 <h2>Limitations</h2>
-<p>[To be completed: FY2026 figures are partial-year and labeled as such; Census availability measures
-cover employer firms; self-representations in SAM are unverified unless certified; data-source
-transitions (FPDS retirement into SAM) are monitored and noted in the changelog.]</p>
+<p>FY2026 is a partial fiscal year in this edition; all FY2026 figures are labeled partial, and trend claims rest on complete years. Dollars are net signed obligations (de-obligations included as negatives), not outlays, so obligation timing differs from spending timing. The Census availability universe covers employer firms only &mdash; the appropriate frame for contracting availability, since nonemployer firms rarely hold federal prime contracts, but a scope choice worth understanding.</p>
+<p>SAM socioeconomic representations are self-representations except where a program requires certification; the Index distinguishes represented from certified status where a measure depends on it. Derived category flags follow the goaling-consistent treatment; alternative flag definitions can produce different category totals, which is precisely why the Index's flags are reconciled to published goaling figures. The government has retired FPDS.gov into SAM.gov and has proposed restructuring registration and representation data; any effect on field availability or series continuity will be disclosed in the changelog with the affected measures.</p>
 
-<h2>Reproduction</h2>
-<p>The analysis scripts, the site generator, and the published tables live together in the public
-repository. Rebuilding any figure requires only public data and the code provided.
-Corrections policy: errors are corrected promptly, disclosed in the <a href="changelog.html">changelog</a>,
-and never silently.</p>
+<h2>Reproduction, licensing &amp; archiving</h2>
+<p>The <a href="https://github.com/federal-marketplace-index/federal-marketplace-index">public repository</a> contains the published tables, the analysis scripts that produce them, the site generator, and the methodology paper. Analysis scripts print their reconciliation checks; a published figure implies its checks passed. Rebuilding any figure requires only public data and the released code.</p>
+<p>Data and text are licensed CC BY 4.0 (attribute to the Federal Marketplace Index&trade;); code is MIT. Each release is archived as an immutable, DOI-referenced snapshot on Zenodo; formal citations should reference the archived release rather than the working repository.</p>
+<div class="note">Archived release &mdash; cite this edition as: Federal Marketplace Index&trade; v0.2 (2026), Zenodo, <a href="https://doi.org/10.5281/zenodo.21247216">https://doi.org/10.5281/zenodo.21247216</a> (DOI 10.5281/zenodo.21247216). The concept DOI 10.5281/zenodo.21247215 always resolves to the latest version.</div>
+<p>Corrections policy: errors are corrected promptly, disclosed in the <a href="changelog.html">changelog</a>, and never silently. Substantive method changes are versioned; prior archived releases remain available unchanged.</p>
 
 <h2>Interest disclosure</h2>
-<p>[Stewardship and contributor disclosure to be finalized: the Index is produced with the support of the
-American Small Business Chamber of Commerce; contributors of specific data layers are identified here,
-with interests stated plainly.]</p>
+<p>The Federal Marketplace Index&trade; is produced by <a href="https://www.asbcc.org/">The American Small Business Chamber of Commerce&trade;</a>, a member-funded organization (dues, events, and capped sponsorships) whose members range from small businesses &mdash; the large majority &mdash; to nonprofits, prime contractors, and government representatives. Sponsorships are held to modest thresholds so no single funder gains undue influence, and the Chamber takes no money from political activist organizations. The Index's independence rests on reproducibility: anyone can rebuild every figure from public data with the published code.</p>
+<p>The Index reports measures across all acquisition methods and all socioeconomic categories and takes no position favoring any program, category, channel, or firm &mdash; it publishes what the data shows, whatever it shows.</p>
 """
     return layout("Methodology", "methodology.html", content)
 
@@ -369,8 +402,7 @@ Cite as: {SHORT_NAME}, [table name], data as of {AS_OF}, {DOMAIN}.</p>
 <tr><th>File</th><th>Contents</th><th>Download</th></tr>
 {rows}
 </table>
-<p>The complete repository — data, analysis code, and this site's generator — is available on GitHub
-[repository link], with an archived, DOI-referenced snapshot on Zenodo [DOI] frozen at each release.</p>
+<p>The complete repository &mdash; data, analysis code, and this site's generator &mdash; is available on <a href="https://github.com/federal-marketplace-index/federal-marketplace-index">GitHub</a>, with an archived, DOI-referenced snapshot on Zenodo frozen at each release: <a href="https://doi.org/10.5281/zenodo.21247216">https://doi.org/10.5281/zenodo.21247216</a> (DOI 10.5281/zenodo.21247216).</p>
 """
     return layout("Downloads", "downloads.html", content)
 
@@ -402,16 +434,13 @@ who is entering and who is leaving, and how concentrated the supplier base is be
 quarterly, with every figure reproducible from public data.</p>
 
 <h2>Who produces it</h2>
-<p>{STEWARD_BODY}. [Governance and contributor statement to be finalized: stewardship, the data layers
-contributed by partner organizations, and every interest disclosed plainly. Independence is maintained
-through reproducibility — the methods are public, so the findings do not depend on trusting the producer.]</p>
+<p>The Federal Marketplace Index&trade; is produced by <a href="https://www.asbcc.org/">The American Small Business Chamber of Commerce&trade;</a>, a member-funded organization (dues, events, and capped sponsorships) whose members range from small businesses &mdash; the large majority &mdash; to nonprofits, prime contractors, and government representatives. Sponsorships are held to modest thresholds so no single funder gains undue influence, and the Chamber takes no money from political activist organizations. The Index's independence rests on reproducibility: anyone can rebuild every figure from public data with the published code.</p>
 
 <h2>What this is not</h2>
-<p>{NOT_GOV} The Index takes no funding from contractors ranked or measured by its data. It is built
-to permit unflattering findings; that openness is what makes its findings credible.</p>
+<p>{NOT_GOV} The Index takes no position favoring any program, category, channel, or firm, and it is built to permit unflattering findings &mdash; that openness, and the fact that every figure can be independently rebuilt from public data, is what makes its findings credible regardless of who funds the Chamber.</p>
 
 <h2>Contact</h2>
-<p>[Contact address] &middot; Corrections and data questions welcome — see the corrections policy in the
+<p><a href="mailto:charmagne@americansbcc.org">charmagne@americansbcc.org</a> &middot; Corrections and data questions welcome — see the corrections policy in the
 <a href="methodology.html">methodology</a>.</p>
 """
     return layout("About", "about.html", content)
