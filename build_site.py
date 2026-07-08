@@ -53,9 +53,21 @@ C_AMBER = "#EF9F27"   # regulation only
 C_CORAL_L = "#F0997B" # orders at/below SAT
 C_CORAL = "#D85A30"   # orders above SAT (the carve-out channel)
 C_GRAY = "#888780"    # below micro-purchase
-CAT_COLORS = {"all": "#5B6470", "small": C_TEAL, "wosb": "#2E75B6", "edwosb": C_CORAL}
-CAT_LABELS = {"all": "All federal dollars", "small": "Small business",
-              "wosb": "Women-owned (WOSB)", "edwosb": "EDWOSB"}
+# Socioeconomically symmetric category set (per the data-capability design:
+# repository exhibits treat all documented flags evenly; no single program is
+# privileged on the front page). Labels drive the exposure chart's category axis.
+CAT_LABELS = {
+    "all": "All federal dollars", "small": "Small business",
+    "sdb": "Small disadvantaged (SDB)", "eight_a": "8(a)",
+    "wosb": "Women-owned (WOSB)", "edwosb": "EDWOSB",
+    "hubzone": "HUBZone", "sdvosb": "SDVOSB", "vosb": "Veteran-owned (VOSB)",
+    "woman_owned": "Woman-owned (any size)",
+}
+CAT_COLORS = {
+    "all": "#5B6470", "small": C_TEAL, "sdb": "#7B4FA3", "eight_a": "#B5651D",
+    "wosb": "#2E75B6", "edwosb": "#6BAED6", "hubzone": "#2CA02C",
+    "sdvosb": "#8C6D31", "vosb": "#C44E52", "woman_owned": "#9467BD",
+}
 
 # ---------------------------------------------------------------------------
 # Data loading (defensive: reads only needed columns by name)
@@ -69,6 +81,7 @@ def read_csv(name):
 
 exposure = read_csv("exposure_layers.csv")
 migration = read_csv("order_channel_share_by_fy.csv")
+vendors = read_csv("vendor_trend.csv")
 
 def exposure_value(layer, cat):
     for r in exposure:
@@ -81,10 +94,25 @@ def latest_order_share(cat):
     rows.sort(key=lambda r: int(r["fiscal_year"]))
     return (rows[-1]["fiscal_year"], float(rows[-1]["order_share_pct"])) if rows else (None, None)
 
-# Headline readings for the masthead strip
-sb_floor = exposure_value("L2", "small")
-wosb_floor = exposure_value("L2", "wosb")
-fy_latest, sb_order_latest = latest_order_share("small")
+def sb_vendor_count(fy):
+    for r in vendors:
+        if r["category"] == "Small business" and int(r["fiscal_year"]) == fy:
+            return int(float(r["vendors"]))
+    return None
+
+# Headline readings for the masthead strip — market-level, plain-language,
+# no single program privileged, and never resting on a partial fiscal year.
+sb_floor = exposure_value("L2", "small")                      # 3.59
+total_measured_b = sum(float(r["all_b"]) for r in exposure) if exposure else 0.0
+total_measured = f"${total_measured_b/1000:.2f}T"             # $3.45T
+
+sb_v_2022 = sb_vendor_count(2022)
+sb_v_2025 = sb_vendor_count(2025)   # 2025 is the latest complete (final) year
+if sb_v_2022 and sb_v_2025:
+    _pct = (sb_v_2025 - sb_v_2022) / sb_v_2022 * 100.0
+    sb_vendor_change = f"{_pct:+.1f}%".replace("+", "").replace("-", "\u2212")   # −9.8%
+else:
+    sb_vendor_change = None
 
 # ---------------------------------------------------------------------------
 # Layout
@@ -118,7 +146,7 @@ nav.site a:hover,nav.site a[aria-current]{color:#fff;border-bottom:2px solid var
 .reading{padding:14px 26px 14px 0;margin-right:26px;border-right:1px solid rgba(255,255,255,.14)}
 .reading:last-child{border-right:none}
 .reading .val{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;color:#fff;font-weight:500}
-.reading .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#8FA6C4;margin-top:2px}
+.reading .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#8FA6C4;margin-top:2px;max-width:230px}
 main{padding:44px 0 20px}
 h1{font-size:1.9rem;font-weight:600;color:var(--ink);line-height:1.25;margin-bottom:14px;
   max-width:760px}
@@ -145,6 +173,7 @@ footer.site .wrap{padding:26px 22px;display:grid;gap:6px}
 footer.site .steward{color:#fff;font-weight:600}
 @media(max-width:640px){
   .reading{border-right:none;padding:8px 0;margin-right:0;width:100%}
+  .reading .lbl{max-width:none}
   .strip .wrap{flex-direction:column;padding-bottom:8px}
 }
 """
@@ -159,12 +188,12 @@ def layout(title, active, content, extra_head=""):
     strip = ""
     if active == "index.html":
         readings = []
+        if total_measured_b:
+            readings.append((total_measured, "federal contract dollars measured \u0026 reconciled, FY2022\u2013FY2026"))
         if sb_floor is not None:
-            readings.append((f"{sb_floor:.2f}%", "of small-business dollars under the mandatory floor"))
-        if wosb_floor is not None:
-            readings.append((f"{wosb_floor:.2f}%", "of women-owned dollars under the mandatory floor"))
-        if sb_order_latest is not None:
-            readings.append((f"{sb_order_latest:.1f}%", f"SB dollars in the order channel, FY{fy_latest}"))
+            readings.append((f"{sb_floor:.1f}%", "of small-business dollars the mandatory Rule of Two still reaches"))
+        if sb_vendor_change is not None:
+            readings.append((sb_vendor_change, "small-business suppliers in the federal market, FY2022\u2192FY2025"))
         cells = "".join(
             f'<div class="reading"><div class="val">{v}</div><div class="lbl">{l}</div></div>'
             for v, l in readings)
@@ -217,7 +246,8 @@ def layout(title, active, content, extra_head=""):
 PLOTLY = '<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>'
 
 def chart_exposure():
-    cats = ["all", "small", "wosb", "edwosb"]
+    # Socioeconomically symmetric: every documented category, not a privileged few.
+    cats = ["all", "small", "sdb", "eight_a", "wosb", "edwosb", "hubzone", "sdvosb", "vosb"]
     layers = [("L1", "Below MPT — no Rule of Two", C_GRAY),
               ("L2", "MPT–SAT standalone — statutory mandate", C_TEAL),
               ("L3", "Above SAT standalone — regulation only", C_AMBER),
@@ -233,18 +263,55 @@ def chart_exposure():
             "hovertemplate": lbl + ": %{x:.2f}%<extra></extra>",
         })
     fig = {"data": traces, "layout": {
-        "barmode": "stack", "height": 300,
-        "margin": {"l": 150, "r": 10, "t": 6, "b": 34},
+        "barmode": "stack", "height": 440,
+        "margin": {"l": 160, "r": 10, "t": 6, "b": 44},
         "xaxis": {"range": [0, 100], "ticksuffix": "%", "gridcolor": "#E5EAF1"},
         "yaxis": {"autorange": "reversed"},
-        "legend": {"orientation": "h", "y": -0.18, "font": {"size": 11}, "traceorder": "normal"},
+        "legend": {"orientation": "h", "y": -0.12, "font": {"size": 11}, "traceorder": "normal"},
         "font": {"family": "IBM Plex Sans, sans-serif", "size": 13, "color": "#22272E"},
         "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)",
     }}
     return fig
 
+def chart_vendor_trend():
+    rows = sorted([r for r in vendors if r["category"] == "Small business"],
+                  key=lambda r: int(r["fiscal_year"]))
+    final = [r for r in rows if r["completeness"] == "final"]
+    partial = [r for r in rows if r["completeness"] == "partial"]
+    traces = [{
+        "type": "scatter", "mode": "lines+markers", "name": "Small-business suppliers",
+        "x": [int(r["fiscal_year"]) for r in final],
+        "y": [int(float(r["vendors"])) for r in final],
+        "line": {"color": C_TEAL, "width": 2.5}, "marker": {"size": 7},
+        "hovertemplate": "FY%{x}: %{y:,} suppliers<extra></extra>",
+    }]
+    if partial and final:
+        last = final[-1]
+        traces.append({
+            "type": "scatter", "mode": "lines+markers", "name": "FY2026 (partial)",
+            "x": [int(last["fiscal_year"])] + [int(r["fiscal_year"]) for r in partial],
+            "y": [int(float(last["vendors"]))] + [int(float(r["vendors"])) for r in partial],
+            "line": {"color": C_TEAL, "width": 2, "dash": "dot"}, "marker": {"size": 6},
+            "opacity": 0.45,
+            "hovertemplate": "FY%{x} (partial): %{y:,} suppliers<extra></extra>",
+        })
+    fig = {"data": traces, "layout": {
+        "height": 340, "margin": {"l": 66, "r": 10, "t": 6, "b": 54},
+        "yaxis": {"title": {"text": "distinct small-business suppliers", "font": {"size": 12}},
+                  "gridcolor": "#E5EAF1", "tickformat": ","},
+        "xaxis": {"tickmode": "linear", "dtick": 1, "range": [2021.6, 2026.4]},
+        "legend": {"orientation": "h", "y": -0.2, "font": {"size": 11}},
+        "font": {"family": "IBM Plex Sans, sans-serif", "size": 13, "color": "#22272E"},
+        "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)",
+        "annotations": [{"x": 0.98, "xref": "paper", "y": 1.04, "yref": "paper", "showarrow": False,
+                         "text": "FY2026 partial", "font": {"size": 10, "color": "#5B6470"}}],
+    }}
+    return fig
+
 def chart_migration():
-    cats = ["all", "small", "wosb", "edwosb"]
+    # Market-level view: all federal dollars vs. small business. Per-category
+    # order-channel detail lives in the downloadable series, not the front page.
+    cats = ["all", "small"]
     traces = []
     for c in cats:
         rows = sorted([r for r in migration if r["category"] == c and r.get("order_share_pct")],
@@ -289,20 +356,29 @@ from roughly 30 million public contract records, reconciled against the governme
 Every number can be rebuilt by anyone, from public data, with the code on this site.</p>
 
 <h2>Where the mandatory Rule of Two applies</h2>
-<p>Share of five-year contract dollars (FY2022–FY2026) in each protection layer. The teal band —
-standalone awards between the micro-purchase threshold and the simplified acquisition threshold —
-is the only layer where small-business set-asides are mandated by statute.</p>
+<p>Share of five-year contract dollars (FY2022–FY2026) in each protection layer, across every documented
+socioeconomic category. The teal band — standalone awards between the micro-purchase threshold and the
+simplified acquisition threshold — is the only layer where small-business set-asides are mandated by statute.
+Everything above it rests on regulation, or on nothing.</p>
 {figure("fig-exposure", chart_exposure(), "Contract dollars by Rule of Two protection layer",
         "Percent of each category's FY2022–FY2026 dollars", "exposure_layers.csv")}
 
+<h2>The small-business supplier base is shrinking</h2>
+<p>Distinct small-business suppliers winning federal contract dollars, by fiscal year. The count fell every
+complete year of the window — from {sb_v_2022:,} in FY2022 to {sb_v_2025:,} in FY2025 — even as total
+contract spending rose. FY2026 is a partial year, shown separately and not comparable to the complete years.</p>
+{figure("fig-vendors", chart_vendor_trend(), "Distinct small-business suppliers by fiscal year",
+        "FY2022–FY2025 complete; FY2026 partial", "vendor_trend.csv")}
+
 <h2>The migration into the order channel</h2>
-<p>Share of each category's dollars flowing through task and delivery orders, by fiscal year.
-Small-business dependence on the order channel has risen every year of the window while the
-overall market's share has held roughly stable — the migration is concentrated on the protected categories.</p>
+<p>Share of dollars flowing through task and delivery orders, by fiscal year — all federal dollars against
+small business. Small-business dependence on the order channel has risen every year of the window while the
+overall market's share has held roughly stable. The order channel is where the mandatory Rule of Two has the
+weakest footing, so where the money is moving matters. Per-category detail is in the downloadable series.</p>
 {figure("fig-migration", chart_migration(), "Order-channel share of dollars by fiscal year",
         "FY2026 is a partial year", "order_channel_share_by_fy.csv")}
 
-<div class="note"><strong>Version 0.</strong> This is the Index's first public release, published to
+<div class="note"><strong>Version 0.</strong> This is an early public release, first published to
 accompany formal comments filed in the FAR Overhaul rulemakings (FAR Cases 2026-001, -002, -005, -007).
 Additional measures — new entrants, vendor concentration, and district-level views — join on the
 quarterly schedule. See the <a href="changelog.html">changelog</a> for exactly what changed and when.</div>
@@ -407,8 +483,9 @@ Cite as: {SHORT_NAME}, [table name], data as of {AS_OF}, {DOMAIN}.</p>
     return layout("Downloads", "downloads.html", content)
 
 CSV_DESCRIPTIONS = {
-    "exposure_layers.csv": "Five-year contract dollars by Rule of Two protection layer and category (percent and $B).",
+    "exposure_layers.csv": "Five-year contract dollars by Rule of Two protection layer and category (percent and $B), all documented socioeconomic categories.",
     "order_channel_share_by_fy.csv": "Order-channel share of dollars and actions by fiscal year and category.",
+    "vendor_trend.csv": "Distinct suppliers, dollars, and dollars-per-supplier by fiscal year and category (FY2022–FY2025 final, FY2026 partial).",
 }
 
 def page_changelog():

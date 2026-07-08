@@ -44,7 +44,7 @@ nav.site a:hover,nav.site a[aria-current]{color:#fff;border-bottom:2px solid var
 .reading{padding:14px 26px 14px 0;margin-right:26px;border-right:1px solid rgba(255,255,255,.14)}
 .reading:last-child{border-right:none}
 .reading .val{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;color:#fff;font-weight:500}
-.reading .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#8FA6C4;margin-top:2px}
+.reading .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#8FA6C4;margin-top:2px;max-width:230px}
 main{padding:44px 0 20px}
 h1{font-size:1.9rem;font-weight:600;color:var(--ink);line-height:1.25;margin-bottom:14px;
   max-width:760px}
@@ -71,6 +71,7 @@ footer.site .wrap{padding:26px 22px;display:grid;gap:6px}
 footer.site .steward{color:#fff;font-weight:600}
 @media(max-width:640px){
   .reading{border-right:none;padding:8px 0;margin-right:0;width:100%}
+  .reading .lbl{max-width:none}
   .strip .wrap{flex-direction:column;padding-bottom:8px}
 }
 </style>
@@ -81,7 +82,7 @@ footer.site .steward{color:#fff;font-weight:600}
   <div class="wrap">
     <div class="brandbar">
       <a class="brand" href="index.html">Federal Marketplace Index<span class="idx"> &middot; Measured. Reconciled. Public.</span></a>
-      <span class="asof">data as of 2026-07-01 &middot; built 2026-07-07</span>
+      <span class="asof">data as of 2026-07-01 &middot; built 2026-07-08</span>
     </div>
     <nav class="site" aria-label="Site"><a href="index.html">Index</a><a href="methodology.html">Methodology</a><a href="downloads.html" aria-current="page">Downloads</a><a href="changelog.html">Changelog</a><a href="about.html">About</a></nav>
   </div>
@@ -95,7 +96,7 @@ Column definitions are in the <a href="data/DATA_DICTIONARY.md">data dictionary<
 Cite as: Federal Marketplace Index, [table name], data as of 2026-07-01, federalmarketplaceindex.org.</p>
 <table class="dl">
 <tr><th>File</th><th>Contents</th><th>Download</th></tr>
-<tr><td class="mono">exposure_layers.csv</td><td>Five-year contract dollars by Rule of Two protection layer and category (percent and $B).</td><td><a href="data/exposure_layers.csv">CSV</a></td></tr><tr><td class="mono">order_channel_share_by_fy.csv</td><td>Order-channel share of dollars and actions by fiscal year and category.</td><td><a href="data/order_channel_share_by_fy.csv">CSV</a></td></tr>
+<tr><td class="mono">exposure_layers.csv</td><td>Five-year contract dollars by Rule of Two protection layer and category (percent and $B), all documented socioeconomic categories.</td><td><a href="data/exposure_layers.csv">CSV</a></td></tr><tr><td class="mono">order_channel_share_by_fy.csv</td><td>Order-channel share of dollars and actions by fiscal year and category.</td><td><a href="data/order_channel_share_by_fy.csv">CSV</a></td></tr><tr><td class="mono">vendor_trend.csv</td><td>Distinct suppliers, dollars, and dollars-per-supplier by fiscal year and category (FY2022–FY2025 final, FY2026 partial).</td><td><a href="data/vendor_trend.csv">CSV</a></td></tr>
 </table>
 <p>The complete repository &mdash; data, analysis code, and this site's generator &mdash; is available on <a href="https://github.com/federal-marketplace-index/federal-marketplace-index">GitHub</a>, with an archived, DOI-referenced snapshot on Zenodo frozen at each release: <a href="https://doi.org/10.5281/zenodo.21247216">https://doi.org/10.5281/zenodo.21247216</a> (DOI 10.5281/zenodo.21247216).</p>
 

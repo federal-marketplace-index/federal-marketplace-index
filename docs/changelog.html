@@ -44,7 +44,7 @@ nav.site a:hover,nav.site a[aria-current]{color:#fff;border-bottom:2px solid var
 .reading{padding:14px 26px 14px 0;margin-right:26px;border-right:1px solid rgba(255,255,255,.14)}
 .reading:last-child{border-right:none}
 .reading .val{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;color:#fff;font-weight:500}
-.reading .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#8FA6C4;margin-top:2px}
+.reading .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#8FA6C4;margin-top:2px;max-width:230px}
 main{padding:44px 0 20px}
 h1{font-size:1.9rem;font-weight:600;color:var(--ink);line-height:1.25;margin-bottom:14px;
   max-width:760px}
@@ -71,6 +71,7 @@ footer.site .wrap{padding:26px 22px;display:grid;gap:6px}
 footer.site .steward{color:#fff;font-weight:600}
 @media(max-width:640px){
   .reading{border-right:none;padding:8px 0;margin-right:0;width:100%}
+  .reading .lbl{max-width:none}
   .strip .wrap{flex-direction:column;padding-bottom:8px}
 }
 </style>
@@ -81,7 +82,7 @@ footer.site .steward{color:#fff;font-weight:600}
   <div class="wrap">
     <div class="brandbar">
       <a class="brand" href="index.html">Federal Marketplace Index<span class="idx"> &middot; Measured. Reconciled. Public.</span></a>
-      <span class="asof">data as of 2026-07-01 &middot; built 2026-07-07</span>
+      <span class="asof">data as of 2026-07-01 &middot; built 2026-07-08</span>
     </div>
     <nav class="site" aria-label="Site"><a href="index.html">Index</a><a href="methodology.html">Methodology</a><a href="downloads.html">Downloads</a><a href="changelog.html" aria-current="page">Changelog</a><a href="about.html">About</a></nav>
   </div>
@@ -94,6 +95,23 @@ footer.site .steward{color:#fff;font-weight:600}
 This page is the Index's freshness guarantee.</p>
 <pre class="log"># Changelog — Federal Marketplace Index
 All data updates, method changes, and corrections are recorded here, permanently.
+
+## v0.3 — 2026-07 (home page: symmetric charts + supplier-base trend)
+- The home-page protection-layer chart now renders all nine documented socioeconomic
+  categories, matching the v0.2 data widening (the chart had still shown four). No
+  figure changed; six category rows were surfaced that were already in the published table.
+- Added the small-business supplier-base trend — distinct suppliers by fiscal year,
+  FY2022–FY2025 final with FY2026 shown as partial — from a new `vendor_trend.csv`,
+  now also listed on Downloads. Reconciles to the SBA FY2025 scorecard vendor count.
+- The order-channel chart now shows all-federal vs. small-business (the market-level
+  view); per-category order-channel detail remains in the downloadable series.
+- Masthead readings revised for plain-language clarity and to lead with the scale of
+  the marketplace measured. No headline now rests on a partial fiscal year.
+- Recorded for completeness: on 2026-07-07 the Methodology, Downloads, and About pages
+  were completed (sources, definitions, and reconciliation tables published; archived-release
+  DOI links added; interest disclosure and contact added), and an inaccurate funding
+  statement on the About page was removed. Text-only changes; no figure affected.
+- Data as of 2026-07-01, unchanged from v0.2 — a presentation/coverage update, not a data refresh.
 
 ## v0.2 — 2026-07 (exposure table widened to all documented socioeconomic categories)
 - `exposure_layers.csv` now reports all nine documented socioeconomic categories —

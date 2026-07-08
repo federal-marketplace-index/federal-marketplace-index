@@ -44,7 +44,7 @@ nav.site a:hover,nav.site a[aria-current]{color:#fff;border-bottom:2px solid var
 .reading{padding:14px 26px 14px 0;margin-right:26px;border-right:1px solid rgba(255,255,255,.14)}
 .reading:last-child{border-right:none}
 .reading .val{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;color:#fff;font-weight:500}
-.reading .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#8FA6C4;margin-top:2px}
+.reading .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#8FA6C4;margin-top:2px;max-width:230px}
 main{padding:44px 0 20px}
 h1{font-size:1.9rem;font-weight:600;color:var(--ink);line-height:1.25;margin-bottom:14px;
   max-width:760px}
@@ -71,6 +71,7 @@ footer.site .wrap{padding:26px 22px;display:grid;gap:6px}
 footer.site .steward{color:#fff;font-weight:600}
 @media(max-width:640px){
   .reading{border-right:none;padding:8px 0;margin-right:0;width:100%}
+  .reading .lbl{max-width:none}
   .strip .wrap{flex-direction:column;padding-bottom:8px}
 }
 </style>
@@ -81,11 +82,11 @@ footer.site .steward{color:#fff;font-weight:600}
   <div class="wrap">
     <div class="brandbar">
       <a class="brand" href="index.html">Federal Marketplace Index<span class="idx"> &middot; Measured. Reconciled. Public.</span></a>
-      <span class="asof">data as of 2026-07-01 &middot; built 2026-07-07</span>
+      <span class="asof">data as of 2026-07-01 &middot; built 2026-07-08</span>
     </div>
     <nav class="site" aria-label="Site"><a href="index.html" aria-current="page">Index</a><a href="methodology.html">Methodology</a><a href="downloads.html">Downloads</a><a href="changelog.html">Changelog</a><a href="about.html">About</a></nav>
   </div>
-  <div class="strip"><div class="wrap"><div class="reading"><div class="val">3.59%</div><div class="lbl">of small-business dollars under the mandatory floor</div></div><div class="reading"><div class="val">3.96%</div><div class="lbl">of women-owned dollars under the mandatory floor</div></div><div class="reading"><div class="val">70.7%</div><div class="lbl">SB dollars in the order channel, FY2026</div></div></div></div>
+  <div class="strip"><div class="wrap"><div class="reading"><div class="val">$3.45T</div><div class="lbl">federal contract dollars measured & reconciled, FY2022–FY2026</div></div><div class="reading"><div class="val">3.6%</div><div class="lbl">of small-business dollars the mandatory Rule of Two still reaches</div></div><div class="reading"><div class="val">−9.8%</div><div class="lbl">small-business suppliers in the federal market, FY2022→FY2025</div></div></div></div>
 </header>
 <main><div class="wrap">
 
@@ -96,30 +97,44 @@ from roughly 30 million public contract records, reconciled against the governme
 Every number can be rebuilt by anyone, from public data, with the code on this site.</p>
 
 <h2>Where the mandatory Rule of Two applies</h2>
-<p>Share of five-year contract dollars (FY2022–FY2026) in each protection layer. The teal band —
-standalone awards between the micro-purchase threshold and the simplified acquisition threshold —
-is the only layer where small-business set-asides are mandated by statute.</p>
+<p>Share of five-year contract dollars (FY2022–FY2026) in each protection layer, across every documented
+socioeconomic category. The teal band — standalone awards between the micro-purchase threshold and the
+simplified acquisition threshold — is the only layer where small-business set-asides are mandated by statute.
+Everything above it rests on regulation, or on nothing.</p>
 <div class="figure">
 <h3>Contract dollars by Rule of Two protection layer</h3>
 <div class="sub">Percent of each category&#x27;s FY2022–FY2026 dollars</div>
 <div id="fig-exposure" role="img" aria-label="Contract dollars by Rule of Two protection layer"></div>
 <div class="src">source: <a href="data/exposure_layers.csv">exposure_layers.csv</a> &middot; FY2022–FY2026 &middot; reconciled to SBA goaling figures &middot; <a href="methodology.html">methodology</a></div>
-<script>Plotly.newPlot("fig-exposure", [{"type": "bar", "orientation": "h", "name": "Below MPT \u2014 no Rule of Two", "y": ["All federal dollars", "Small business", "Women-owned (WOSB)", "EDWOSB"], "x": [0.09, 0.32, 0.4, 0.15], "marker": {"color": "#888780"}, "hovertemplate": "Below MPT \u2014 no Rule of Two: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "MPT\u2013SAT standalone \u2014 statutory mandate", "y": ["All federal dollars", "Small business", "Women-owned (WOSB)", "EDWOSB"], "x": [1.23, 3.59, 3.96, 2.64], "marker": {"color": "#0F6E56"}, "hovertemplate": "MPT\u2013SAT standalone \u2014 statutory mandate: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "Above SAT standalone \u2014 regulation only", "y": ["All federal dollars", "Small business", "Women-owned (WOSB)", "EDWOSB"], "x": [41.98, 28.25, 22.42, 24.29], "marker": {"color": "#EF9F27"}, "hovertemplate": "Above SAT standalone \u2014 regulation only: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "Orders \u2264 SAT", "y": ["All federal dollars", "Small business", "Women-owned (WOSB)", "EDWOSB"], "x": [3.42, 6.99, 7.53, 6.17], "marker": {"color": "#F0997B"}, "hovertemplate": "Orders \u2264 SAT: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "Orders > SAT \u2014 the carve-out channel", "y": ["All federal dollars", "Small business", "Women-owned (WOSB)", "EDWOSB"], "x": [53.28, 60.84, 65.69, 66.76], "marker": {"color": "#D85A30"}, "hovertemplate": "Orders > SAT \u2014 the carve-out channel: %{x:.2f}%<extra></extra>"}], {"barmode": "stack", "height": 300, "margin": {"l": 150, "r": 10, "t": 6, "b": 34}, "xaxis": {"range": [0, 100], "ticksuffix": "%", "gridcolor": "#E5EAF1"}, "yaxis": {"autorange": "reversed"}, "legend": {"orientation": "h", "y": -0.18, "font": {"size": 11}, "traceorder": "normal"}, "font": {"family": "IBM Plex Sans, sans-serif", "size": 13, "color": "#22272E"}, "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)"}, {displayModeBar:false, responsive:true});</script>
+<script>Plotly.newPlot("fig-exposure", [{"type": "bar", "orientation": "h", "name": "Below MPT \u2014 no Rule of Two", "y": ["All federal dollars", "Small business", "Small disadvantaged (SDB)", "8(a)", "Women-owned (WOSB)", "EDWOSB", "HUBZone", "SDVOSB", "Veteran-owned (VOSB)"], "x": [0.09, 0.32, 0.17, 0.02, 0.4, 0.15, 0.12, 0.08, 0.12], "marker": {"color": "#888780"}, "hovertemplate": "Below MPT \u2014 no Rule of Two: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "MPT\u2013SAT standalone \u2014 statutory mandate", "y": ["All federal dollars", "Small business", "Small disadvantaged (SDB)", "8(a)", "Women-owned (WOSB)", "EDWOSB", "HUBZone", "SDVOSB", "Veteran-owned (VOSB)"], "x": [1.23, 3.59, 2.73, 1.06, 3.96, 2.64, 2.31, 2.78, 2.82], "marker": {"color": "#0F6E56"}, "hovertemplate": "MPT\u2013SAT standalone \u2014 statutory mandate: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "Above SAT standalone \u2014 regulation only", "y": ["All federal dollars", "Small business", "Small disadvantaged (SDB)", "8(a)", "Women-owned (WOSB)", "EDWOSB", "HUBZone", "SDVOSB", "Veteran-owned (VOSB)"], "x": [41.98, 28.25, 34.09, 39.67, 22.42, 24.29, 27.67, 25.76, 24.55], "marker": {"color": "#EF9F27"}, "hovertemplate": "Above SAT standalone \u2014 regulation only: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "Orders \u2264 SAT", "y": ["All federal dollars", "Small business", "Small disadvantaged (SDB)", "8(a)", "Women-owned (WOSB)", "EDWOSB", "HUBZone", "SDVOSB", "Veteran-owned (VOSB)"], "x": [3.42, 6.99, 5.11, 3.5, 7.53, 6.17, 6.11, 5.41, 5.55], "marker": {"color": "#F0997B"}, "hovertemplate": "Orders \u2264 SAT: %{x:.2f}%<extra></extra>"}, {"type": "bar", "orientation": "h", "name": "Orders > SAT \u2014 the carve-out channel", "y": ["All federal dollars", "Small business", "Small disadvantaged (SDB)", "8(a)", "Women-owned (WOSB)", "EDWOSB", "HUBZone", "SDVOSB", "Veteran-owned (VOSB)"], "x": [53.28, 60.84, 57.9, 55.76, 65.69, 66.76, 63.78, 65.98, 66.96], "marker": {"color": "#D85A30"}, "hovertemplate": "Orders > SAT \u2014 the carve-out channel: %{x:.2f}%<extra></extra>"}], {"barmode": "stack", "height": 440, "margin": {"l": 160, "r": 10, "t": 6, "b": 44}, "xaxis": {"range": [0, 100], "ticksuffix": "%", "gridcolor": "#E5EAF1"}, "yaxis": {"autorange": "reversed"}, "legend": {"orientation": "h", "y": -0.12, "font": {"size": 11}, "traceorder": "normal"}, "font": {"family": "IBM Plex Sans, sans-serif", "size": 13, "color": "#22272E"}, "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)"}, {displayModeBar:false, responsive:true});</script>
+</div>
+
+<h2>The small-business supplier base is shrinking</h2>
+<p>Distinct small-business suppliers winning federal contract dollars, by fiscal year. The count fell every
+complete year of the window — from 62,862 in FY2022 to 56,728 in FY2025 — even as total
+contract spending rose. FY2026 is a partial year, shown separately and not comparable to the complete years.</p>
+<div class="figure">
+<h3>Distinct small-business suppliers by fiscal year</h3>
+<div class="sub">FY2022–FY2025 complete; FY2026 partial</div>
+<div id="fig-vendors" role="img" aria-label="Distinct small-business suppliers by fiscal year"></div>
+<div class="src">source: <a href="data/vendor_trend.csv">vendor_trend.csv</a> &middot; FY2022–FY2026 &middot; reconciled to SBA goaling figures &middot; <a href="methodology.html">methodology</a></div>
+<script>Plotly.newPlot("fig-vendors", [{"type": "scatter", "mode": "lines+markers", "name": "Small-business suppliers", "x": [2022, 2023, 2024, 2025], "y": [62862, 61827, 61249, 56728], "line": {"color": "#0F6E56", "width": 2.5}, "marker": {"size": 7}, "hovertemplate": "FY%{x}: %{y:,} suppliers<extra></extra>"}, {"type": "scatter", "mode": "lines+markers", "name": "FY2026 (partial)", "x": [2025, 2026], "y": [56728, 36758], "line": {"color": "#0F6E56", "width": 2, "dash": "dot"}, "marker": {"size": 6}, "opacity": 0.45, "hovertemplate": "FY%{x} (partial): %{y:,} suppliers<extra></extra>"}], {"height": 340, "margin": {"l": 66, "r": 10, "t": 6, "b": 54}, "yaxis": {"title": {"text": "distinct small-business suppliers", "font": {"size": 12}}, "gridcolor": "#E5EAF1", "tickformat": ","}, "xaxis": {"tickmode": "linear", "dtick": 1, "range": [2021.6, 2026.4]}, "legend": {"orientation": "h", "y": -0.2, "font": {"size": 11}}, "font": {"family": "IBM Plex Sans, sans-serif", "size": 13, "color": "#22272E"}, "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)", "annotations": [{"x": 0.98, "xref": "paper", "y": 1.04, "yref": "paper", "showarrow": false, "text": "FY2026 partial", "font": {"size": 10, "color": "#5B6470"}}]}, {displayModeBar:false, responsive:true});</script>
 </div>
 
 <h2>The migration into the order channel</h2>
-<p>Share of each category's dollars flowing through task and delivery orders, by fiscal year.
-Small-business dependence on the order channel has risen every year of the window while the
-overall market's share has held roughly stable — the migration is concentrated on the protected categories.</p>
+<p>Share of dollars flowing through task and delivery orders, by fiscal year — all federal dollars against
+small business. Small-business dependence on the order channel has risen every year of the window while the
+overall market's share has held roughly stable. The order channel is where the mandatory Rule of Two has the
+weakest footing, so where the money is moving matters. Per-category detail is in the downloadable series.</p>
 <div class="figure">
 <h3>Order-channel share of dollars by fiscal year</h3>
 <div class="sub">FY2026 is a partial year</div>
 <div id="fig-migration" role="img" aria-label="Order-channel share of dollars by fiscal year"></div>
 <div class="src">source: <a href="data/order_channel_share_by_fy.csv">order_channel_share_by_fy.csv</a> &middot; FY2022–FY2026 &middot; reconciled to SBA goaling figures &middot; <a href="methodology.html">methodology</a></div>
-<script>Plotly.newPlot("fig-migration", [{"type": "scatter", "mode": "lines+markers", "name": "All federal dollars", "x": [2022, 2023, 2024, 2025, 2026], "y": [53.54, 56.15, 59.43, 57.7, 56.16], "line": {"color": "#5B6470", "width": 2.5}, "hovertemplate": "All federal dollars FY%{x}: %{y:.1f}%<extra></extra>"}, {"type": "scatter", "mode": "lines+markers", "name": "Small business", "x": [2022, 2023, 2024, 2025, 2026], "y": [66.03, 66.95, 68.15, 68.69, 70.65], "line": {"color": "#0F6E56", "width": 2.5}, "hovertemplate": "Small business FY%{x}: %{y:.1f}%<extra></extra>"}, {"type": "scatter", "mode": "lines+markers", "name": "Women-owned (WOSB)", "x": [2022, 2023, 2024, 2025, 2026], "y": [71.62, 70.9, 74.58, 74.36, 75.99], "line": {"color": "#2E75B6", "width": 2.5}, "hovertemplate": "Women-owned (WOSB) FY%{x}: %{y:.1f}%<extra></extra>"}, {"type": "scatter", "mode": "lines+markers", "name": "EDWOSB", "x": [2022, 2023, 2024, 2025, 2026], "y": [68.19, 66.97, 77.0, 77.46, 83.52], "line": {"color": "#D85A30", "width": 2.5}, "hovertemplate": "EDWOSB FY%{x}: %{y:.1f}%<extra></extra>"}], {"height": 340, "margin": {"l": 50, "r": 10, "t": 6, "b": 60}, "yaxis": {"ticksuffix": "%", "gridcolor": "#E5EAF1", "title": {"text": "order-channel share of dollars", "font": {"size": 12}}}, "xaxis": {"tickmode": "linear", "dtick": 1, "range": [2021.6, 2026.4]}, "legend": {"orientation": "h", "y": -0.22, "font": {"size": 11}}, "font": {"family": "IBM Plex Sans, sans-serif", "size": 13, "color": "#22272E"}, "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)", "annotations": [{"x": 0.98, "xref": "paper", "y": 1.04, "yref": "paper", "showarrow": false, "text": "FY2026 partial", "font": {"size": 10, "color": "#5B6470"}}]}, {displayModeBar:false, responsive:true});</script>
+<script>Plotly.newPlot("fig-migration", [{"type": "scatter", "mode": "lines+markers", "name": "All federal dollars", "x": [2022, 2023, 2024, 2025, 2026], "y": [53.54, 56.15, 59.43, 57.7, 56.16], "line": {"color": "#5B6470", "width": 2.5}, "hovertemplate": "All federal dollars FY%{x}: %{y:.1f}%<extra></extra>"}, {"type": "scatter", "mode": "lines+markers", "name": "Small business", "x": [2022, 2023, 2024, 2025, 2026], "y": [66.03, 66.95, 68.15, 68.69, 70.65], "line": {"color": "#0F6E56", "width": 2.5}, "hovertemplate": "Small business FY%{x}: %{y:.1f}%<extra></extra>"}], {"height": 340, "margin": {"l": 50, "r": 10, "t": 6, "b": 60}, "yaxis": {"ticksuffix": "%", "gridcolor": "#E5EAF1", "title": {"text": "order-channel share of dollars", "font": {"size": 12}}}, "xaxis": {"tickmode": "linear", "dtick": 1, "range": [2021.6, 2026.4]}, "legend": {"orientation": "h", "y": -0.22, "font": {"size": 11}}, "font": {"family": "IBM Plex Sans, sans-serif", "size": 13, "color": "#22272E"}, "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)", "annotations": [{"x": 0.98, "xref": "paper", "y": 1.04, "yref": "paper", "showarrow": false, "text": "FY2026 partial", "font": {"size": 10, "color": "#5B6470"}}]}, {displayModeBar:false, responsive:true});</script>
 </div>
 
-<div class="note"><strong>Version 0.</strong> This is the Index's first public release, published to
+<div class="note"><strong>Version 0.</strong> This is an early public release, first published to
 accompany formal comments filed in the FAR Overhaul rulemakings (FAR Cases 2026-001, -002, -005, -007).
 Additional measures — new entrants, vendor concentration, and district-level views — join on the
 quarterly schedule. See the <a href="changelog.html">changelog</a> for exactly what changed and when.</div>

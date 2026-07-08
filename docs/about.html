@@ -44,7 +44,7 @@ nav.site a:hover,nav.site a[aria-current]{color:#fff;border-bottom:2px solid var
 .reading{padding:14px 26px 14px 0;margin-right:26px;border-right:1px solid rgba(255,255,255,.14)}
 .reading:last-child{border-right:none}
 .reading .val{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;color:#fff;font-weight:500}
-.reading .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#8FA6C4;margin-top:2px}
+.reading .lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#8FA6C4;margin-top:2px;max-width:230px}
 main{padding:44px 0 20px}
 h1{font-size:1.9rem;font-weight:600;color:var(--ink);line-height:1.25;margin-bottom:14px;
   max-width:760px}
@@ -71,6 +71,7 @@ footer.site .wrap{padding:26px 22px;display:grid;gap:6px}
 footer.site .steward{color:#fff;font-weight:600}
 @media(max-width:640px){
   .reading{border-right:none;padding:8px 0;margin-right:0;width:100%}
+  .reading .lbl{max-width:none}
   .strip .wrap{flex-direction:column;padding-bottom:8px}
 }
 </style>
@@ -81,7 +82,7 @@ footer.site .steward{color:#fff;font-weight:600}
   <div class="wrap">
     <div class="brandbar">
       <a class="brand" href="index.html">Federal Marketplace Index<span class="idx"> &middot; Measured. Reconciled. Public.</span></a>
-      <span class="asof">data as of 2026-07-01 &middot; built 2026-07-07</span>
+      <span class="asof">data as of 2026-07-01 &middot; built 2026-07-08</span>
     </div>
     <nav class="site" aria-label="Site"><a href="index.html">Index</a><a href="methodology.html">Methodology</a><a href="downloads.html">Downloads</a><a href="changelog.html">Changelog</a><a href="about.html" aria-current="page">About</a></nav>
   </div>
