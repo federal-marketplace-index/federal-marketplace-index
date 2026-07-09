@@ -484,6 +484,7 @@ Cite as: {SHORT_NAME}, [table name], data as of {AS_OF}, {DOMAIN}.</p>
 
 CSV_DESCRIPTIONS = {
     "exposure_layers.csv": "Five-year contract dollars by Rule of Two protection layer and category (percent and $B), all documented socioeconomic categories.",
+"exposure_layers_dollars_actions.csv": "Contract dollars and contract-action counts by Rule of Two protection layer and socioeconomic category, pooled FY2022–FY2026 (FY2026 partial) — the raw dollars+actions source behind exposure_layers.csv.",
     "order_channel_share_by_fy.csv": "Order-channel share of dollars and actions by fiscal year and category.",
     "vendor_trend.csv": "Distinct suppliers, dollars, and dollars-per-supplier by fiscal year and category (FY2022–FY2025 final, FY2026 partial).",
 }
